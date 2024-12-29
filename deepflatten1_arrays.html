@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>deep flatten 1 - arrays</title>
+  </head>
+  <body>
+    <h3>deep flatten 1 - arrays</h3>
+
+    <main></main>
+
+    <style></style>
+
+    <script>
+      function recursiveFlatten(input) {
+        const flattened = [];
+
+        if (Array.isArray(input)) {
+          input.forEach((item) => {
+            const result = recursiveFlatten(item);
+            flattened.push(...result);
+          });
+        } else {
+          flattened.push(input);
+        }
+
+        return flattened;
+      }
+
+      function iterativeFlatten(arr) {
+        const queue = [...arr]; // copy queue of our array
+        const flattened = [];
+
+        while (queue.length) {
+          const current = queue.shift();
+          if (Array.isArray(current)) {
+            queue.unshift(...current);
+          } else {
+            flattened.push(current);
+          }
+        }
+
+        return flattened;
+      }
+
+      const arr = [[1, 2, undefined], 3, 4, [[[5, null, 6]], [5, [[6], 7]]]];
+      console.log(recursiveFlatten(arr));
+      console.log(iterativeFlatten(arr));
+    </script>
+  </body>
+</html>

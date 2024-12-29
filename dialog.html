@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dialog</title>
+  </head>
+  <body>
+    <h3>Dialog</h3>
+    <button id="open-dialog">Show Dialog</button>
+
+    <dialog class="dialog-container">
+      <div class="dialog-heading">
+        <h3>Modal Dialog</h3>
+        <button id="dialog-close-icon">X</button>
+      </div>
+      <p>Hey this is a modal, close it if you want.</p>
+      <button id="dialog-close-button">Close</button>
+    </dialog>
+
+    <style>
+      .dialog-container {
+        display: flex;
+        flex-direction: column;
+        width: 500px;
+        border: 1px solid black;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 5px 5px 45px;
+      }
+      .dialog-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    </style>
+
+    <script>
+      const dialog = document.getElementById("dialog-container");
+      const openDialog = document.getElementById("open-dialog");
+      openDialog.addEventListener("click", () => {
+        dialog.showModal();
+      });
+
+      const dialogCloseButton = document.getElementById("dialog-close-button");
+      dialogCloseButton.addEventListener("click", () => {
+        dialog.close();
+      });
+    </script>
+  </body>
+</html>

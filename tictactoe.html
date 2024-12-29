@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic tac toe</title>
+  </head>
+  <body>
+    <h3>Tic tac toe</h3>
+
+    <main class="container"></main>
+
+    <style>
+      button {
+        height: 50px;
+        width: 50px;
+      }
+    </style>
+
+    <script>
+      const GRIDSIZE = 5;
+      let grid = [];
+      let player = "X";
+
+      const container = document.querySelector(".container");
+
+      for (let r = 0; r < GRIDSIZE; r++) {
+        const row = document.createElement("tr");
+        grid[r] = new Array(GRIDSIZE);
+        for (let c = 0; c < GRIDSIZE; c++) {
+          grid[r][c] = "-";
+          const item = document.createElement("button");
+          item.classList.add("button");
+          item.addEventListener("click", play);
+          item.textContent = "-";
+          item.dataset.r = r;
+          item.dataset.c = c;
+          row.appendChild(item);
+        }
+        container.appendChild(row);
+      }
+
+      function play(event) {
+        let element = event.target;
+        if (element.textContent === "-") {
+          let r = +element.dataset.r;
+          let c = +element.dataset.c;
+          grid[r][c] = player;
+          element.textContent = player;
+          if (checkWinner(r, c)) {
+            console.log("winner : ", player);
+            const buttons = container.querySelectorAll(".button");
+            buttons.forEach((button) => (button.disabled = true));
+            showWinner();
+            return;
+          }
+          changePlayer();
+        }
+      }
+
+      function showWinner() {
+        alert(`WINNER IS :  ${player}`);
+      }
+
+      function checkWinner(r, c) {
+        // row is same
+        if (grid[r].every((value) => value === grid[r][c])) {
+          return true;
+        }
+
+        // col is same
+        if (grid.map((row) => row[c]).every((value) => value === grid[r][c])) {
+          return true;
+        }
+
+        // main diagonal
+        if (
+          grid
+            .map((row, index) => row[index])
+            .every((value) => value === grid[r][c])
+        ) {
+          return true;
+        }
+
+        // alt diagonal
+        if (
+          grid
+            .map((row, index) => row[GRIDSIZE - 1 - index])
+            .every((value) => value === grid[r][c])
+        ) {
+          return true;
+        }
+
+        return false;
+      }
+
+      function changePlayer() {
+        player = player === "X" ? "O" : "X";
+      }
+    </script>
+  </body>
+</html>

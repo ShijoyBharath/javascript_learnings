@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Throttle</title>
+  </head>
+  <body>
+    <h3>Throttle</h3>
+    <p>Limit the rate of throttle to certain intervals</p>
+
+    <main></main>
+
+    <style></style>
+
+    <script>
+      function expensiveFn(event) {
+        if (!event) return;
+        console.log(event.x, event.y);
+      }
+
+      const throttledFn = throttle(expensiveFn, 2000);
+      const throttledFn2 = throttle2(expensiveFn, 2000);
+
+      function throttle(callback, delay) {
+        let timer;
+        let lastTimeCalled = 0;
+
+        return function (...args) {
+          let currentTime = Date.now();
+          let difference = currentTime - lastTimeCalled;
+          let delayRemaining = delay - difference;
+
+          function invokeCallback() {
+            callback.call(this, ...args);
+            console.log("throttlefn 1");
+            lastTimeCalled = Date.now();
+          }
+
+          if (delayRemaining > 0) {
+            if (timer) clearTimeout(timer);
+            timer = setTimeout(invokeCallback, delay);
+          } else {
+            invokeCallback();
+          }
+        };
+      }
+
+      function throttle2(callback, delay) {
+        let timer;
+        let lastTimeCalled = 0;
+
+        return function (...args) {
+          let currentTime = Date.now();
+
+          function invokeCallback() {
+            callback.call(this, ...args);
+            console.log("throttlefn 2");
+            lastTimeCalled = Date.now();
+          }
+
+          if (currentTime - lastTimeCalled < delay) {
+            if (timer) clearTimeout(timer);
+            timer = setTimeout(invokeCallback, delay);
+          } else {
+            invokeCallback();
+          }
+        };
+      }
+
+      document.addEventListener("mousemove", throttledFn);
+      document.addEventListener("mousemove", throttledFn2);
+    </script>
+  </body>
+</html>

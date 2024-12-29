@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Progress Bar</title>
+  </head>
+  <body>
+    <h3>Progress Bar - requestAnimationFrame</h3>
+
+    <main>
+      <div class="container">
+        <div id="loader" class="loader"></div>
+      </div>
+
+      <button id="start-button">start</button>
+      <button id="stop-button">stop</button>
+      <button id="reset-button">reset</button>
+    </main>
+
+    <style>
+      .container {
+        height: 10px;
+        width: 500px;
+        background-color: rgb(221, 221, 221);
+        margin-bottom: 50px;
+      }
+
+      .loader {
+        height: 10px;
+        width: 0px;
+        background-color: rgb(81, 81, 255);
+      }
+    </style>
+
+    <script>
+      const loader = document.getElementById("loader");
+
+      let width = 0;
+      let reqAniFrameId = null;
+      let inProgress = false;
+
+      const startButton = document.getElementById("start-button");
+      const stopButton = document.getElementById("stop-button");
+      const resetButton = document.getElementById("reset-button");
+
+      function startProgress() {
+        inProgress = true;
+        startButton.disabled = true;
+        stopButton.disabled = false;
+        continueProgress();
+        function continueProgress() {
+          if (width < 500) {
+            width += 5;
+            loader.style.width = `${width}px`;
+            reqAniFrameId = requestAnimationFrame(continueProgress);
+          }
+        }
+      }
+
+      startButton.addEventListener("click", startProgress);
+      stopButton.addEventListener("click", () => {
+        cancelAnimationFrame(reqAniFrameId);
+        startButton.disabled = false;
+        stopButton.disabled = true;
+      });
+      resetButton.addEventListener("click", () => {
+        cancelAnimationFrame(reqAniFrameId);
+        startButton.disabled = false;
+        stopButton.disabled = true;
+        width = 0;
+        loader.style.width = "0px";
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debounce</title>
+  </head>
+  <body>
+    <h3>Debounce</h3>
+    <p>
+      Limiting the rate when a function is called. Restrict how often a function
+      is called. Limits how frequently a function can be executed.
+    </p>
+
+    <main>
+      <input id="input-box" type="text" onkeyup="debouncedFn()" />
+    </main>
+
+    <style></style>
+
+    <script>
+      let count = 0;
+      let input = "";
+
+      const expensiveFn = () => {
+        setTimeout(() => {
+          let value = document.getElementById("input-box").value;
+          console.log(`Function call : ${count} for input => ${value}`);
+          count++;
+        }, 500);
+      };
+
+      const debouncedFn = debounce(expensiveFn, 300, true);
+
+      // immediate for the first key stroke / invocation
+      function debounce(callback, delay, immediate = false) {
+        let timer;
+
+        return function (...args) {
+          let firstCall = !timer && immediate;
+          if (firstCall) {
+            callback.call(this, ...args);
+          }
+          if (timer) clearTimeout(timer);
+          timer = setTimeout(() => {
+            if (!firstCall) {
+              callback.call(this, ...args);
+            }
+          }, delay);
+        };
+      }
+    </script>
+  </body>
+</html>

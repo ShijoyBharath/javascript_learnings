@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promise</title>
+  </head>
+  <body>
+    <h3>Promise</h3>
+
+    <main></main>
+
+    <style></style>
+
+    <script>
+      function promiseA(a) {
+        return new MyPromise((resolve, reject) => {
+          setTimeout(() => {
+            if (a == 1) {
+              return reject("a cannot be 1");
+            }
+
+            resolve(a + a);
+          }, 1000);
+        });
+      }
+
+      const STATE = {
+        PENDING: "PENDING",
+        SUCCESS: "SUCCESS",
+        REJECTED: "FAILED",
+      };
+
+      class MyPromise {
+        constructor(execFn) {
+          this.val = null; // keep track of the value
+          this.state = STATE.PENDING; // promises have 3 states - pending, success, rejected
+          this.successCallbacks = []; // for chaining promises, we need a list of callback functions
+          this.failedCallbacks = []; // for chaining promises, list of failed callbacks
+          try {
+            execFn(
+              // (resolve, reject)
+              (val) => this.resolve(val), //resolve
+              (val) => this.reject(val) //reject
+            );
+          } catch (error) {
+            this.reject(error);
+          }
+        }
+
+        resolve(val) {
+          this.val = val;
+          this.state = STATE.SUCCESS;
+          this.successCallbacks.forEach((cb) => cb());
+        }
+
+        reject(val) {
+          this.val = val;
+          this.state = STATE.REJECTED;
+          this.failedCallbacks.forEach((cb) => cb());
+        }
+
+        then(onResolve, onReject) {
+          return new MyPromise((resolve, reject) => {
+            const successCaller = () => {
+              if (!onResolve) return resolve(this.val);
+
+              try {
+                let val = onResolve(this.val);
+                resolve(val);
+              } catch (error) {
+                reject(error);
+              }
+            };
+            const failedCaller = () => {
+              if (!onReject) return reject(this.val);
+
+              try {
+                let val = onReject(this.val);
+                resolve(val);
+              } catch (error) {
+                reject(error);
+              }
+            };
+
+            switch (this.state) {
+              case STATE.PENDING:
+                this.successCallbacks.push(successCaller);
+                this.failedCallbacks.push(failedCaller);
+                break;
+              case STATE.SUCCESS:
+                successCaller();
+                break;
+              case STATE.REJECTED:
+                failedCaller();
+                break;
+              default:
+                throw new Error("State not defined");
+            }
+          });
+        }
+
+        catch(onReject) {
+          return this.then(null, onReject);
+        }
+      }
+
+      promiseA(2)
+        .then((res) => console.log(res))
+        .catch((err) => console.error(err));
+    </script>
+  </body>
+</html>

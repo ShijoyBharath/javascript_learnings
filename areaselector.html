@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Area Selector</title>
+  </head>
+  <body>
+    <h3>Area Selector</h3>
+
+    <main class="grid"></main>
+
+    <style>
+      .grid {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .row {
+        display: flex;
+      }
+
+      .box {
+        border: 1px solid gray;
+        height: 40px;
+        width: 40px;
+      }
+    </style>
+
+    <script>
+      const GRIDSIZE = 20;
+      const grid = document.querySelector(".grid");
+      let cells = [];
+
+      for (let r = 0; r < GRIDSIZE; r++) {
+        const row = document.createElement("div");
+        row.classList.add("row");
+        cells.push([]);
+        for (let c = 0; c < GRIDSIZE; c++) {
+          const box = document.createElement("div");
+          box.classList.add("box");
+          box.dataset.r = r;
+          box.dataset.c = c;
+          row.append(box);
+          cells[r].push(box);
+        }
+        grid.append(row);
+      }
+
+      let initR, initC;
+      grid.addEventListener("mousedown", (event) => {
+        if (event.target.classList.contains("box")) {
+          initR = event.target.dataset.r;
+          initC = event.target.dataset.c;
+          markCells(initR, initC);
+        }
+      });
+      grid.addEventListener("mousemove", (event) => {
+        if (event.target.classList.contains("box")) {
+          let r = event.target.dataset.r;
+          let c = event.target.dataset.c;
+          unmarkCells();
+          markCells(r, c);
+        }
+      });
+
+      grid.addEventListener("mouseleave", clearCells);
+      grid.addEventListener("mouseup", clearCells);
+
+      function markCells(endR, endC) {
+        if (initR && initC && endR && endC) {
+          let minR = Math.min(initR, endR);
+          let maxR = Math.max(initR, endR);
+          let minC = Math.min(initC, endC);
+          let maxC = Math.max(initC, endC);
+          for (let r = minR; r <= maxR; r++) {
+            for (let c = minC; c <= maxC; c++) {
+              cells[r][c].style.backgroundColor = "skyblue";
+            }
+          }
+        }
+      }
+
+      function clearCells() {
+        initR = null;
+        initC = null;
+        unmarkCells();
+      }
+
+      function unmarkCells() {
+        cells.forEach((row) => {
+          row.forEach((cell) => {
+            cell.style.backgroundColor = "";
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

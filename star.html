@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h3>Star Rating</h3>
+    <main>
+      <div class="star-container"></div>
+    </main>
+
+    <style>
+      .star-container {
+        display: flex;
+        gap: 10px;
+        font-size: 50px;
+      }
+
+      .star {
+        border: none;
+        padding: 0;
+        font-size: inherit;
+        background-color: transparent;
+      }
+
+      .star-empty::before {
+        content: "☆";
+      }
+
+      .star-filled::before {
+        color: gold;
+        text-shadow: 0px 0px 2px black;
+        cursor: pointer;
+        content: "★";
+      }
+    </style>
+
+    <script>
+      const starCount = 5;
+      let rating = 0;
+
+      const container = document.querySelector(".star-container");
+      container.addEventListener("click", fillStarListener);
+      container.addEventListener("mouseover", hoverListener);
+      container.addEventListener("mouseleave", leaveListener);
+
+      function createStar(i) {
+        const star = document.createElement("button");
+        star.classList.add("star");
+        star.classList.add("star-empty");
+        star.setAttribute("data-index", i);
+        return star;
+      }
+
+      for (let i = 1; i <= starCount; i++) {
+        container.appendChild(createStar(i));
+      }
+
+      const stars = container.querySelectorAll(".star");
+
+      function fillStarListener(event) {
+        const target = event.target;
+        if (target.classList.contains("star")) {
+          const index = +target.dataset.index;
+          rating = index;
+          fillStars(rating);
+        }
+      }
+      function hoverListener(event) {
+        const target = event.target;
+        if (target.classList.contains("star")) {
+          const index = +target.dataset.index;
+          fillStars(index);
+        }
+      }
+      function leaveListener(event) {
+        fillStars(rating);
+      }
+
+      function fillStars(index) {
+        for (let i = 0; i < index; i++) {
+          stars[i].classList.add("star-filled");
+          stars[i].classList.remove("star-empty");
+        }
+        for (let i = index; i < starCount; i++) {
+          stars[i].classList.add("star-empty");
+          stars[i].classList.remove("star-filled");
+        }
+      }
+    </script>
+  </body>
+</html>

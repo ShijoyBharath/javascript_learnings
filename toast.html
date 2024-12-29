@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Toast</title>
+  </head>
+  <body>
+    <h3>Toast</h3>
+
+    <main>
+      <div class="container top-left"></div>
+      <template id="toast">
+        <main class="toast-container">
+          <div class="toast-content"></div>
+          <button class="toast-close">close</button>
+        </main>
+      </template>
+
+      <div class="toast-form">
+        <button id="show-toast">show toast</button>
+      </div>
+    </main>
+
+    <style>
+      h3 {
+        text-align: center;
+      }
+      .toast-form {
+        display: flex;
+        justify-content: center;
+      }
+      .container {
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .top-left {
+        bottom: 1rem;
+        left: 1rem;
+        align-items: flex-end;
+      }
+
+      .toast-container {
+        border: 1px solid gray;
+        border-radius: 10px;
+        padding: 10px;
+        background-color: aliceblue;
+        width: 20vw;
+      }
+      .toast-container.fade-out-left {
+        animation: fadeOutToLeft 0.2s ease-in forwards;
+      }
+
+      @keyframes fadeOutToLeft {
+        0% {
+          transform: translate(0, 0);
+        }
+
+        100% {
+          transform: translate(-200%, 0);
+        }
+      }
+    </style>
+
+    <script>
+      const topLeft = document.querySelector(".top-left");
+      const toastTemplate = document.getElementById("toast");
+      const showToast = document.getElementById("show-toast");
+
+      showToast.addEventListener("click", () => {
+        displayToast();
+      });
+
+      function displayToast() {
+        topLeft.append(createToast());
+      }
+
+      function createToast() {
+        const toast = toastTemplate.content.cloneNode(true);
+        toast.querySelector(".toast-content").textContent =
+          "Important message!";
+        toast
+          .querySelector(".toast-close")
+          .addEventListener("click", removeToast);
+
+        const toastEl = toast.querySelector(".toast-container");
+
+        setTimeout(removeToast, 3000);
+
+        async function removeToast() {
+          toastEl.classList.add("fade-out-left");
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          toastEl.remove();
+        }
+
+        return toast;
+      }
+    </script>
+  </body>
+</html>

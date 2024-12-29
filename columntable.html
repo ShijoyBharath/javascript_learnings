@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Column Table</title>
+  </head>
+  <body>
+    <h3>Column Table</h3>
+
+    <main>
+      <form id="input-form">
+        <label for="rows">rows</label>
+        <input id="rows" type="number" />
+        <label for="cols">cols</label>
+        <input id="cols" type="number" />
+        <button type="submit">create</button>
+      </form>
+
+      <div class="container">
+        <table id="table"></table>
+      </div>
+    </main>
+
+    <style>
+      td {
+        padding: 10px;
+        text-align: center;
+        border: 1px solid black;
+      }
+    </style>
+
+    <script>
+      const form = document.getElementById("input-form");
+      const table = document.getElementById("table");
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent form submission from reloading the page
+
+        table.innerHTML = "";
+
+        // Get input values
+        const rows = document.getElementById("rows").value;
+        const cols = document.getElementById("cols").value;
+
+        let count = 1;
+        for (let r = 0; r < rows; r++) {
+          let row = document.createElement("tr");
+          for (let c = 0; c < cols; c++) {
+            const colEl = document.createElement("td");
+            colEl.textContent = count++;
+            row.append(colEl);
+          }
+          table.append(row);
+        }
+      });
+    </script>
+  </body>
+</html>

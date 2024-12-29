@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>deep flatten 2 - objects</title>
+  </head>
+  <body>
+    <h3>deep flatten 2 - objects</h3>
+
+    <main></main>
+
+    <style></style>
+
+    <script>
+      let input = {
+        a: 1,
+        b: {
+          c: 2,
+          d: 3,
+        },
+        e: {
+          f: {
+            g: 4,
+            h: null,
+            i: undefined,
+          },
+        },
+      };
+
+      function recursiveObjectFlatten(input) {
+        if (typeof input !== "object" || input === null) return input;
+
+        let flatten = {};
+
+        for (const key in input) {
+          const val = input[key];
+          const flatVal = recursiveObjectFlatten(val);
+
+          if (typeof flatVal === "object" && flatVal !== null) {
+            flatten = { ...flatten, ...flatVal };
+          } else {
+            flatten[key] = flatVal;
+          }
+        }
+
+        return flatten;
+      }
+
+      console.log(recursiveObjectFlatten(input));
+    </script>
+  </body>
+</html>

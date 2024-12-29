@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>find matching json</title>
+  </head>
+  <body>
+    <h3>find matching json</h3>
+
+    <main></main>
+
+    <style></style>
+
+    <script>
+      const data = [
+        {
+          name: "Alice Johnson",
+          company: "TechCorp",
+          level: "Senior",
+          position: "Software Engineer",
+        },
+        {
+          name: "Bob Smith",
+          company: "InnoVentures",
+          level: "Junior",
+          position: "Frontend Developer",
+        },
+        {
+          name: "Charlie Brown",
+          company: "DataGenix",
+          level: "Mid",
+          position: "Backend Developer",
+        },
+        {
+          name: "Diana Lee",
+          company: "CodeCraft",
+          level: "Lead",
+          position: "Full Stack Developer",
+        },
+        {
+          name: "Evan Wright",
+          company: "AppSphere",
+          level: "Senior",
+          position: "Software Engineer",
+        },
+      ];
+
+      const match = {
+        position: "Software Engineer",
+        level: "Senior",
+      };
+
+      function matchingJSON(data, search) {
+        return data.filter((row) => {
+          const rowKeys = Object.keys(row);
+          const searchKeys = Object.keys(search);
+
+          return searchKeys.every((key) => {
+            const everySearchKeyExistsWithinRow = rowKeys.includes(key);
+            if (!everySearchKeyExistsWithinRow) return false;
+
+            return row[key] === search[key];
+          });
+        });
+      }
+
+      console.log(matchingJSON(data, match));
+    </script>
+  </body>
+</html>

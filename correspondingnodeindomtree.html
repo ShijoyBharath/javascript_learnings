@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Corresponding node in dom tree</title>
+  </head>
+  <body>
+    <h3>Corresponding node in dom tree</h3>
+
+    <main>
+      <div id="tree1">
+        <div class="container">
+          <div class="row">Row</div>
+          <div id="target" class="row">Row</div>
+          <div class="row">Row</div>
+        </div>
+      </div>
+      <div id="tree2">
+        <div class="container">
+          <div class="row">Row</div>
+          <div class="row">Found Me</div>
+          <div class="row">Row</div>
+        </div>
+      </div>
+    </main>
+
+    <style></style>
+
+    <script>
+      function correspondingNode(treeA, treeB, target) {
+        console.log(treeA, treeB, target);
+        const stackA = [treeA];
+        const stackB = [treeB];
+
+        while (stackA.length) {
+          const currentA = stackA.pop();
+          const currentB = stackB.pop();
+
+          if (currentA === target) {
+            return currentB;
+          }
+
+          stackA.push(...currentA.children);
+          stackB.push(...currentB.children);
+        }
+      }
+
+      const treeA = document.getElementById("tree1");
+      const treeB = document.getElementById("tree2");
+      const target = document.getElementById("target");
+      console.log(correspondingNode(treeA, treeB, target).textContent);
+    </script>
+  </body>
+</html>

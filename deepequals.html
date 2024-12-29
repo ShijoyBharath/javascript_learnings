@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deep equals</title>
+  </head>
+  <body>
+    <h3>Deep equals</h3>
+
+    <main></main>
+
+    <style></style>
+
+    <script>
+      function deepEquals(valueOne, valueTwo) {
+        // step 1 - NaN
+        if (Number.isNaN(valueOne) && Number.isNaN(valueTwo)) {
+          return valueOne === valueTwo;
+        }
+
+        // step 2 - null
+        if (valueOne === null && valueTwo === null) {
+          return valueOne === valueTwo;
+        }
+
+        // step 3 - primitives
+
+        // step 4 - arrays
+
+        // step 5 - objects
+      }
+    </script>
+  </body>
+</html>
